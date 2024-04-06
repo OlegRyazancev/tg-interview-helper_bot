@@ -1,0 +1,22 @@
+server:
+  port: 8081
+
+spring:
+  profiles:
+    active: default
+  application:
+    name: user
+  config:
+    import: optional:file:.env[.properties]
+
+  #PostgreSQL connection
+  datasource:
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_USER_DATABASE}?currentSchema=${POSTGRES_USER_SCHEMA}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
