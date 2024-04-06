@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import ru.ryazancev.bot.model.InterviewBot;
+import ru.ryazancev.bot.service.InterviewBot;
 
 /**
  * @author Oleg Ryazancev
