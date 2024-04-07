@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.ryazancev.bot.command.handler.callback.CallbackQueryHandler;
+import ru.ryazancev.bot.command.handler.command.CommandHandler;
 import ru.ryazancev.bot.command.processor.CommandProcessor;
 import ru.ryazancev.bot.command.creator.impl.DefaultCommandCreator;
 
@@ -25,14 +28,35 @@ public class InterviewBot extends TelegramLongPollingBot {
     @Value("${interview-bot.name}")
     private String name;
 
-    public InterviewBot(@Value("${interview-bot.token}") String botToken) {
+    private final CommandHandler commandHandler;
+    private final CallbackQueryHandler callbackQueryHandler;
+
+    public InterviewBot(@Value("${interview-bot.token}") String botToken,
+                        CommandHandler commandHandler,
+                        CallbackQueryHandler callbackQueryHandler) {
         super(botToken);
         setupCommands();
+        this.commandHandler = commandHandler;
+        this.callbackQueryHandler = callbackQueryHandler;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
 
+        SendMessage sendMessage;
+
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            sendMessage = commandHandler.handleTextUpdate(update);
+        } else if (update.hasCallbackQuery()) {
+            sendMessage = callbackQueryHandler.handleCallback(update);
+        } else {
+            sendMessage = SendMessage.builder()
+                    .chatId(update.getMessage().getChatId())
+                    .text("Unknown update")
+                    .build();
+        }
+
+        sendMessage(sendMessage);
     }
 
     @Override
