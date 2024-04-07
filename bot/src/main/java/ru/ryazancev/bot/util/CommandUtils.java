@@ -2,7 +2,6 @@ package ru.ryazancev.bot.util;
 
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import ru.ryazancev.bot.command.type.CommandDetails;
-import ru.ryazancev.bot.util.UnknownCommandException;
 
 import java.util.Arrays;
 import java.util.List;

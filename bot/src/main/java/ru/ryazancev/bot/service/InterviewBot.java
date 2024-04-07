@@ -10,10 +10,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.ryazancev.bot.command.creator.impl.DefaultCommandCreator;
 import ru.ryazancev.bot.command.handler.callback.CallbackQueryHandler;
 import ru.ryazancev.bot.command.handler.command.CommandHandler;
 import ru.ryazancev.bot.command.processor.CommandProcessor;
-import ru.ryazancev.bot.command.creator.impl.DefaultCommandCreator;
 
 import java.util.List;
 
