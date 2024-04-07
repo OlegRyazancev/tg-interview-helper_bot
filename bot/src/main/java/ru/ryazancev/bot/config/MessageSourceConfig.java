@@ -13,11 +13,26 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 public class MessageSourceConfig {
 
     @Bean
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages/messages");
+    public MessageSource commandDescriptions() {
+        var messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages/command-descriptions");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
 
+    @Bean
+    public MessageSource exceptionMessages() {
+        var messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages/exception-messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
+
+    @Bean
+    public MessageSource sendingMessages() {
+        var messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages/send-messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
 }
