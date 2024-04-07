@@ -9,11 +9,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.ryazancev.bot.command.creator.impl.DefaultCommandCreator;
-import ru.ryazancev.bot.command.handler.callback.CallbackQueryHandler;
-import ru.ryazancev.bot.command.handler.command.CommandHandler;
-import ru.ryazancev.bot.command.processor.CommandProcessor;
+import ru.ryazancev.bot.command.creator.CommandCreator;
+import ru.ryazancev.bot.handler.CallbackHandler;
+import ru.ryazancev.bot.handler.TextHandler;
 
 import java.util.List;
 
@@ -28,16 +26,20 @@ public class InterviewBot extends TelegramLongPollingBot {
     @Value("${interview-bot.name}")
     private String name;
 
-    private final CommandHandler commandHandler;
-    private final CallbackQueryHandler callbackQueryHandler;
+    private final TextHandler textHandler;
+    private final CallbackHandler callbackHandler;
+    private final CommandCreator commandCreator;
 
     public InterviewBot(@Value("${interview-bot.token}") String botToken,
-                        CommandHandler commandHandler,
-                        CallbackQueryHandler callbackQueryHandler) {
+                        TextHandler textHandler,
+                        CallbackHandler callbackHandler,
+                        CommandCreator commandCreator) {
         super(botToken);
+        this.textHandler = textHandler;
+        this.callbackHandler = callbackHandler;
+        this.commandCreator = commandCreator;
         setupCommands();
-        this.commandHandler = commandHandler;
-        this.callbackQueryHandler = callbackQueryHandler;
+        log.info("23423");
     }
 
     @Override
@@ -46,9 +48,9 @@ public class InterviewBot extends TelegramLongPollingBot {
         SendMessage sendMessage;
 
         if (update.hasMessage() && update.getMessage().hasText()) {
-            sendMessage = commandHandler.handleTextUpdate(update);
+            sendMessage = textHandler.handleTextUpdate(update);
         } else if (update.hasCallbackQuery()) {
-            sendMessage = callbackQueryHandler.handleCallback(update);
+            sendMessage = callbackHandler.handleCallback(update);
         } else {
             sendMessage = SendMessage.builder()
                     .chatId(update.getMessage().getChatId())
@@ -66,11 +68,11 @@ public class InterviewBot extends TelegramLongPollingBot {
 
     private void setupCommands() {
 
-        List<BotCommand> commands = CommandProcessor.createCommandList(DefaultCommandCreator::new);
+        List<BotCommand> commands = commandCreator.createCommandList();
         try {
             this.execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));
-        } catch (TelegramApiException e) {
-            log.error("Error setting bot's command list: " + e.getMessage());
+        } catch (Exception e) {
+            log.error("Exception " + e.getMessage());
         }
     }
 
@@ -78,7 +80,7 @@ public class InterviewBot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
             log.info("message executed " + sendMessage.getChatId());
-        } catch (TelegramApiException e) {
+        } catch (Exception e) {
             log.error("Exception " + e.getMessage());
         }
     }
