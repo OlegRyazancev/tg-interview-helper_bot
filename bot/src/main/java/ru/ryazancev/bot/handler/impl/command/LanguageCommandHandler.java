@@ -1,11 +1,12 @@
-package ru.ryazancev.bot.command.handler.command.impl;
+package ru.ryazancev.bot.handler.impl.command;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.ryazancev.bot.command.Button;
-import ru.ryazancev.bot.command.handler.command.LanguageHandler;
+import ru.ryazancev.bot.command.type.DefaultCommand;
+import ru.ryazancev.bot.handler.CommandHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,17 @@ import java.util.List;
  */
 
 @Component
-public class LanguageHandlerImpl implements LanguageHandler {
+public class LanguageCommandHandler implements CommandHandler {
 
     @Override
-    public void handleLanguageCommand(SendMessage message) {
-        message.setText("Choose your prefer language");
+    public DefaultCommand getCommand() {
+        return DefaultCommand.LANGUAGE;
+    }
+
+    @Override
+    public void prepareMessage(SendMessage sendMessage) {
+
+        sendMessage.setText("Choose your prefer language");
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
@@ -37,8 +44,7 @@ public class LanguageHandlerImpl implements LanguageHandler {
         rowsInLine.add(rowInLine);
 
         markup.setKeyboard(rowsInLine);
-        message.setReplyMarkup(markup);
-
+        sendMessage.setReplyMarkup(markup);
 
     }
 }
