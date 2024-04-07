@@ -7,5 +7,6 @@ package ru.ryazancev.bot.command.type;
 public interface CommandDetails {
 
     String getCommandName();
+
     String getDescription();
 }

@@ -1,36 +1,27 @@
 package ru.ryazancev.bot.command.type;
 
-import lombok.Setter;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
+import lombok.Getter;
 
 /**
  * @author Oleg Ryazancev
  */
 
+@Getter
 public enum DefaultCommand implements CommandDetails {
+
     START("command.default.start"),
     USER_DATA("command.default.user_data"),
     DELETE_DATA("command.default.delete_data"),
     HELP("command.default.help"),
     LANGUAGE("command.default.language");
 
+    private final String description;
 
-    @Setter
-    private static MessageSource messageSource;
-
-    private final String commandName;
-
-    DefaultCommand(String commandName) {
-        this.commandName = commandName;
+    DefaultCommand(String description) {
+        this.description = description;
     }
 
     public String getCommandName() {
         return "/" + name().toLowerCase();
-    }
-
-    @Override
-    public String getDescription() {
-        return messageSource.getMessage(commandName, null, LocaleContextHolder.getLocale());
     }
 }
