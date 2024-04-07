@@ -1,14 +1,17 @@
-package ru.ryazancev.bot.command.handler.command.impl;
+package ru.ryazancev.bot.handler.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.ryazancev.bot.command.handler.command.*;
 import ru.ryazancev.bot.command.type.DefaultCommand;
+import ru.ryazancev.bot.handler.CommandHandler;
+import ru.ryazancev.bot.handler.TextHandler;
 import ru.ryazancev.bot.util.CommandUtils;
-import ru.ryazancev.bot.util.UnknownCommandException;
+import ru.ryazancev.bot.util.exception.UnknownCommandException;
+
+import java.util.Map;
 
 /**
  * @author Oleg Ryazancev
@@ -17,12 +20,11 @@ import ru.ryazancev.bot.util.UnknownCommandException;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class DefaultCommandHandler implements CommandHandler {
+public class TextHandlerImpl implements TextHandler {
 
-    private final LanguageHandler languageHandler;
-    private final StartHandler startHandler;
-    private final UserDataHandler userDataHandler;
-    private final HelpHandler helpHandler;
+
+    private final Map<DefaultCommand, CommandHandler> commandHandlers;
+
 
     @Override
     public SendMessage handleTextUpdate(Update update) {
@@ -31,7 +33,6 @@ public class DefaultCommandHandler implements CommandHandler {
 
         SendMessage message = new SendMessage();
         message.setChatId(update.getMessage().getChatId());
-
 
         DefaultCommand command;
         try {
@@ -42,24 +43,7 @@ public class DefaultCommandHandler implements CommandHandler {
             return message;
         }
 
-
-        switch (command) {
-            case START -> {
-                startHandler.handleStartCommand(message);
-            }
-            case USER_DATA -> {
-                userDataHandler.handleUserDataCommand(message);
-            }
-            case DELETE_DATA -> {
-                userDataHandler.handleDeleteCommand(message);
-            }
-            case HELP -> {
-                helpHandler.handleHelpCommand(message);
-            }
-            case LANGUAGE -> {
-                languageHandler.handleLanguageCommand(message);
-            }
-        }
+        commandHandlers.get(command).prepareMessage(message);
         return message;
     }
 }
