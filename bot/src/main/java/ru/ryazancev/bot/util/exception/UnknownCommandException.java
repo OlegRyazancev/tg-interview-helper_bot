@@ -1,4 +1,4 @@
-package ru.ryazancev.bot.util;
+package ru.ryazancev.bot.util.exception;
 
 /**
  * @author Oleg Ryazancev
