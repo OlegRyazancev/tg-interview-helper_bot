@@ -22,8 +22,6 @@ public class InterviewBotInitializer {
         var api = new TelegramBotsApi(DefaultBotSession.class);
         api.registerBot(interviewBot);
 
-        log.info("Bot registered");
-
         return api;
     }
 }

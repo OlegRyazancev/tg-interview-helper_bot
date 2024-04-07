@@ -42,12 +42,20 @@ public class InterviewBot extends TelegramLongPollingBot {
 
     private void setupCommands() {
 
-        List<BotCommand> commands =
-                CommandProcessor.createCommandList(DefaultCommandCreator::new);
+        List<BotCommand> commands = CommandProcessor.createCommandList(DefaultCommandCreator::new);
         try {
             this.execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
             log.error("Error setting bot's command list: " + e.getMessage());
+        }
+    }
+
+    private void sendMessage(SendMessage sendMessage) {
+        try {
+            execute(sendMessage);
+            log.info("message executed " + sendMessage.getChatId());
+        } catch (TelegramApiException e) {
+            log.error("Exception " + e.getMessage());
         }
     }
 }
