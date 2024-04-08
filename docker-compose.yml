@@ -33,6 +33,49 @@ services:
     volumes:
       - pgadmin:/var/lib/pgadmin
 
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    ports:
+      - "22181:2181"
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - interview-helper-bot
+
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "29092:29092"
+    restart: unless-stopped
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - interview-helper-bot
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "9093:8080"
+    restart: unless-stopped
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: interview-helper-bot-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092"
+    networks:
+      - interview-helper-bot
+
 networks:
   interview-helper-bot:
     driver: bridge
