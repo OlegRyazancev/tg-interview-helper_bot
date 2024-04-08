@@ -1,6 +1,7 @@
 package ru.ryazancev.bot.handler;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.ryazancev.bot.command.type.DefaultCommand;
 
 /**
@@ -11,5 +12,5 @@ public interface CommandHandler {
 
     DefaultCommand getCommand();
 
-    void prepareMessage(SendMessage sendMessage);
+    SendMessage prepareMessage(Message message);
 }
