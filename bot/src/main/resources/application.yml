@@ -1,13 +1,21 @@
 server:
   port: 8080
-
 spring:
   profiles:
     active: default
   application:
-    name: user
+    name: bot
   config:
     import: optional:file:.env[.properties]
+  web:
+    locale: ${LOCALE}
+
+  #Kafka
+  kafka:
+    bootstrap-servers: localhost:29092
+    topic:
+      user:
+        register: ${KAFKA_REGISTER_USER_TOPIC}
 
 interview-bot:
   name: ${BOT_NAME}
