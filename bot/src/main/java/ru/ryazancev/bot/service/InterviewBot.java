@@ -12,9 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import ru.ryazancev.bot.command.Button;
 import ru.ryazancev.bot.command.creator.CommandCreator;
+import ru.ryazancev.bot.handler.TextHandler;
 import ru.ryazancev.bot.handler.impl.callback.EditMessageCallbackHandler;
 import ru.ryazancev.bot.handler.impl.callback.SendMessageCallbackHandler;
-import ru.ryazancev.bot.handler.TextHandler;
 
 import java.util.List;
 

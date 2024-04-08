@@ -7,10 +7,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import ru.ryazancev.bot.service.DataFetcher;
 import ru.ryazancev.bot.command.Button;
 import ru.ryazancev.bot.command.type.DefaultCommand;
 import ru.ryazancev.bot.handler.CommandHandler;
+import ru.ryazancev.bot.service.DataFetcher;
 import ru.ryazancev.bot.util.message.impl.SendMessageProcessor;
 
 import java.util.ArrayList;
