@@ -15,6 +15,7 @@
     <modules>
         <module>bot</module>
         <module>user</module>
+        <module>common</module>
     </modules>
 
     <properties>
